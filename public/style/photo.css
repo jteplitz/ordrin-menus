@@ -1,0 +1,156 @@
+.imageContainer{
+  float: left;
+  height: 113px;
+  width: 113px;
+  cursor: pointer;
+}
+
+.foursquareImage{
+  margin-bottom: 10px;
+}
+
+.imageContainer .imageTag{
+  height: 20px;
+  margin-top: 20px;
+}
+
+#showMore:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.images{
+  float: left;
+  margin-right: 10px;
+}
+
+.imageBox.loaded{
+  overflow: hidden;
+  height: 110px; 
+  width: 110px;
+  display: block;
+}
+
+.hidden{
+  display: none;
+}
+
+.clear{
+  clear: both;
+}
+
+.textContainer{
+}
+
+.auto_box{
+  border:1px solid #ccc;
+  padding:5px;
+  list-style-type: none;
+  overflow-y: scroll;
+  height: 100px;
+  width: 354px;
+  margin: 0;
+  padding: 0;
+  margin-top: -2px;
+  position: absolute;
+  background-color: #FFFFFF;
+  z-index: 100;
+}
+
+.generalImage{
+  margin-left: 15px;
+  margin-bottom: 20px;
+}
+
+.inputContainer{
+
+}
+
+#menuInputs{
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.auto_box li{
+  margin-top: 10px;
+  border-bottom; 1px solid black;
+}
+#dialogImg{
+  max-height: 400px;
+  max-width: 400px;
+  margin-bottom: 10px;
+}
+#imageDialog .dialog{
+  top: 50%;
+  left: 50%;
+  margin-left: -205px;
+  margin-top: -390px;
+  width: 410px;
+  max-height: 795px;
+}
+#imageDialog .dialogContent{
+  width: 410px;
+  margin-top: -60px;
+}
+
+.dialogDescription{
+  margin-bottom: 20px;
+}
+
+.dialogContent a{
+  color: #000;
+  font-size: 12px;
+  text-decoration: underline;
+}
+#subQuery {
+  width: 150px;
+  height: 30px;
+  background: #e36d7a; /* Old browsers */
+  background: -moz-linear-gradient(top,  #e36d7a 0%, #bc2032 50%, #981625 51%, #ee3a4f 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e36d7a), color-stop(50%,#bc2032), color-stop(51%,#981625), color-stop(100%,#ee3a4f)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e36d7a', endColorstr='#ee3a4f',GradientType=0 ); /* IE6-9 */
+  color: #fff;
+  font-family: "Paytone One", sans-serif;
+  font-size: 14px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+#imageIgnore{
+  cursor: pointer;
+}
+
+.query {
+  width: 350px;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  height: 30px;
+  margin-right: 5px;
+}
+
+.plus {
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+#dialogBg{
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+  background-color: black;
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.typingSuggestion{
+  display: block;
+  cursor: pointer;
+}
