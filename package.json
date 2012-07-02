@@ -4,6 +4,7 @@
   , "private": true
   , "dependencies": {
       "express": "2.5.11",
-      "nconf"      : "0.5.x"
+      "nconf"  : "0.5.x",
+      "hbs"    : "1.0.4"
   }
 }

@@ -13,6 +13,7 @@ exports.index = function(req, res){
 
 exports.menu = function(req, res){
   req._ordrinMenus.getMenuHtml(req.params.rid, function(err, data){
+    res.render("menu", {menu: data});
     res.send(data);
   });
 }

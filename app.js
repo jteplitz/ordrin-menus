@@ -22,6 +22,10 @@ menus = new menus({
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
+  app.set("view options", {
+    layout: false
+  });
+  app.set('view engine', 'hbs');
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(function(req, res, next){
