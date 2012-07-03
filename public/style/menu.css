@@ -357,13 +357,17 @@ body{
 }
 /* popup menu : heading of the menu item pop-up */
 .mItem-add-to-tray .boxright {
-  padding-bottom: 5px;
   border-bottom: 1px dashed #a7a69b;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  padding-right: 10px;
 }
 .mItem-add-to-tray h1 {
   font-weight: bold;
   font-size: 18px;
   color: #d2142e;
+  float: left;
+  width: 70%;
 }
 .mItem-add-to-tray .menu-hd .boxright .slim-col {
   font-size: 18px;

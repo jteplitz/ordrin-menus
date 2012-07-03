@@ -59,12 +59,14 @@ var ordrin = {};
 
     console.log(node.getElementsByClassName("name"));
     // put the name and description in the option box
-    var title   = node.getElementsByClassName("name")[0].innerHTML + " (" + node.getElementsByClassName("price")[0].innerHTML + ")";
+    var title   = node.getElementsByClassName("name")[0].innerHTML;
+    var price   = node.getElementsByClassName("price")[0].innerHTML;
     var descrip = node.getElementsByClassName("menuItemDescription")[0].innerHTML;
     var id      = node.getAttribute("data-miid");
     var category = goUntilParent(node, "menuCategory").getElementsByClassName("itemListName")[0].innerHTML;
-    document.getElementById("dialogDescription").innerHTML = descrip;
-    document.getElementById("optionsTitle").innerHTML = title;
+    elements.dialog.getElementsByClassName("dialogDescription")[0].innerHTML = descrip;
+    elements.dialog.getElementsByClassName("itemTitle")[0].innerHTML = title;
+    elements.dialog.getElementsByClassName("itemPrice")[0].innerHTML = price;
     elements.dialog.setAttribute("data-miid", id);
     elements.dialog.setAttribute("data-title", title);
     elements.dialog.setAttribute("data-category", category);
@@ -76,7 +78,7 @@ var ordrin = {};
     node.className = node.className.replace("hidden", "");
 
     // put them in the dialog option container
-    document.getElementById("optionContainer").appendChild(node);
+    elements.dialog.getElementsByClassName("optionContainer")[0].appendChild(node);
 
     showDialogBox();
   }
@@ -101,16 +103,14 @@ var ordrin = {};
       elements.dialogBg.className   += " hidden";
       elements.dialog.className     += " hidden";
       // remove elements in option container
-      var optionContainer = document.getElementById("optionContainer");
+      var optionContainer = elements.dialog.getElementsByClassName("optionContainer")[0];
       optionContainer.removeChild(optionContainer.getElementsByClassName("optionCategoryList")[0]);
-
-      document.getElementById("deleteItem").checked = false;
     }
   }
 
   function addTrayItem(){
     var id = elements.dialog.getAttribute("data-miid")
-    var item = elements.dialog.getElementsByClass("optionsTitle")[0].innerHTML
+    var item = elements.dialog.getElementsByClassName("itemTitle")[0].innerHTML
     var category = elements.dialog.getAttribute("data-category")
 
     check_boxes = elements.dialog.getElementsByClassName("optionCheckbox")
