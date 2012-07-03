@@ -154,6 +154,9 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
       for(var i=0; i<checkBoxes.length; i++){
         checkBoxes[i].checked = false;
       }
+
+      // reset quantity
+      elements.dialog.getElementsByClassName("itemQuantity")[0].value = 1;
     }
   }
 
