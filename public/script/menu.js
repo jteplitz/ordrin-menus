@@ -5,6 +5,45 @@ var ordrin = {};
 
   var elements = {}; // variable to store elements so we don't have to continually DOM them
 
+  // ordrin api classes
+  var TrayItem = function(itemId, quantity, options){
+    this.itemId   = itemId;
+    this.quantity = quantity;
+    this.options  = options;
+
+    this.buildItemString = function(){
+      var string = this.itemId + "/" + this.quantity;
+
+      for (var i = 0; i< this.options.length; i++){
+        string += "," + this.options[i];
+      }
+      return string;
+    }
+
+  }
+
+  var Tray = function(items){
+    this.items = items;
+
+    this.buildTrayString = function(){
+      var string = "";
+      for (var i = 0; i < this.items.length; i++){
+        string += "+" + this.items[i].buildItemString();
+      }
+      return string.substring(1); // remove that first plus
+    };
+
+    this.addItem = function(item){
+      if (!(item instanceof TrayItem)){
+        throw new Error("Item must be an object of the Tray Item class");
+      } else {
+        this.items.push(item);
+      }
+    }  
+  };
+
+  ordrin.tray = new Tray([])
+  
   function listen(evnt, elem, func) {
     if (elem.addEventListener)  // W3C DOM
       elem.addEventListener(evnt,func,false);
@@ -43,7 +82,8 @@ var ordrin = {};
     // call the appropiate function based on what element was actually clicked
     var routes = {  
       menuItem    : createDialogBox,
-      closeDialog : hideDialogBox
+      closeDialog : hideDialogBox,
+      addToTray: addTrayItem
     }
 
     var name = event.srcElement.getAttribute("data-listener");
@@ -84,7 +124,6 @@ var ordrin = {};
   }
 
   function showDialogBox(){
-    // gray out background
     // show background
     elements.dialogBg.className = elements.dialogBg.className.replace("hidden", "");
 
@@ -105,6 +144,10 @@ var ordrin = {};
       // remove elements in option container
       var optionContainer = elements.dialog.getElementsByClassName("optionContainer")[0];
       optionContainer.removeChild(optionContainer.getElementsByClassName("optionCategoryList")[0]);
+      checkBoxes = elements.dialog.getElementsByClassName("optionCheckbox");
+      for(var i=0; i<checkBoxes.length; i++){
+        checkBoxes[i].checked = false;
+      }
     }
   }
 
@@ -113,49 +156,17 @@ var ordrin = {};
     var item = elements.dialog.getElementsByClassName("itemTitle")[0].innerHTML
     var category = elements.dialog.getAttribute("data-category")
 
-    check_boxes = elements.dialog.getElementsByClassName("optionCheckbox")
-    for(var i=0; i<check_boxes.length; i++){
-      
+    checkBoxes = dialog.getElementsByClassName("optionCheckbox")
+    options = []
+    for(var i=0; i<checkBoxes.length; i++){
+      if(checkBoxes[i].checked){
+        option = goUntilParent(checkBoxes[i], "option").getAttribute("data-moid")
+        options.push(option)
+      }
     }
+    trayItem = new TrayItem(id, quantity, options)
+    ordrin.tray.addItem(trayItem)
   }
-
-  // ordrin api classes
-  var TrayItem = function(itemId, quantity, options){
-    this.itemId   = itemId;
-    this.quantity = quantity;
-    this.options  = options;
-
-    this.buildItemString = function(){
-      var string = this.itemId + "/" + this.quantity;
-
-      for (var i = 0; i< this.options.length; i++){
-        string += "," + this.options[i];
-      }
-      return string;
-    }
-
-  }
-
-  var Tray = function(items){
-    this.items = items;
-
-    this.buildTrayString = function(){
-      var string = "";
-      for (var i = 0; i < this.items.length; i++){
-        string += "+" + this.items[i].buildItemString();
-      }
-      return string.substring(1); // remove that first plus
-    };
-
-    this.addItem = function(item){
-      if (!(item instanceof TrayItem)){
-        throw new Error("Item must be an object of the Tray Item class");
-      } else {
-        this.items.push(item);
-      }
-    }  
-  };
-
 
   // UTILITY FUNCTIONS
   function getElements(){
