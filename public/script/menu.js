@@ -1,3 +1,5 @@
+var ordrin = {};
+
 (function(){
   "use strict";
   
@@ -144,4 +146,41 @@
       
     }
   }
+
+  // ordrin api classes
+  var TrayItem = function(itemId, quantity, options){
+    this.itemId   = itemId;
+    this.quantity = quantity;
+    this.options  = options;
+
+    this.buildItemString = function(){
+      var string = this.itemId + "/" + this.quantity;
+
+      for (var i = 0; i< this.options.length; i++){
+        string += "," + this.options[i];
+      }
+      return string;
+    }
+
+  }
+
+  var Tray = function(items){
+    this.items = items;
+
+    this.buildTrayString = function(){
+      var string = "";
+      for (var i = 0; i < this.items.length; i++){
+        string += "+" + this.items[i].buildItemString();
+      }
+      return string.substring(1); // remove that first plus
+    };
+
+    this.addItem = function(item){
+      if (!(item instanceof TrayItem)){
+        throw new Error("Item must be an object of the Tray Item class");
+      } else {
+        this.items.push(item);
+      }
+    }  
+  };
 })();
