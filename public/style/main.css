@@ -212,8 +212,6 @@ body{
 /* popup menu : heading of the menu item pop-up */
 .mItem-add-to-tray .boxright {
   border-bottom: 1px dashed #a7a69b;
-  padding-top: 30px;
-  padding-bottom: 20px;
   padding-right: 10px;
 }
 .mItem-add-to-tray h1 {
@@ -223,6 +221,7 @@ body{
   float: left;
   width: 70%;
   padding: 0;
+  margin: 0;
 }
 .mItem-add-to-tray .menu-hd .boxright .slim-col {
   font-size: 18px;
