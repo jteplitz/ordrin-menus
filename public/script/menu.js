@@ -1,15 +1,13 @@
 (function(){
   "use strict";
-
-    var menu; // element that the whole menu is loaded into
   
   function listen(evnt, elem, func) {
-      if (elem.addEventListener)  // W3C DOM
-          elem.addEventListener(evnt,func,false);
-      else if (elem.attachEvent) { // IE DOM
-           var r = elem.attachEvent("on"+evnt, func);
-    return r;
-      }
+    if (elem.addEventListener)  // W3C DOM
+      elem.addEventListener(evnt,func,false);
+    else if (elem.attachEvent) { // IE DOM
+      var r = elem.attachEvent("on"+evnt, func);
+      return r;
+    }
   }
 
   function goUntilParent(node, targetClass){
@@ -31,7 +29,6 @@
 
   listen("DOMContentLoaded", window, function(){
     listen("click", document, clicked);
-    menu = document.getElementById("ordrinMenu");
   });
 
   function clicked(event){
@@ -42,6 +39,7 @@
     var routes = {  
       menuItem    : createDialogBox,
       closeDialog : hideDialogBox,
+      deleteItem: deleteItem,
     }
 
     var name = event.srcElement.getAttribute("data-listener");
@@ -63,7 +61,7 @@
     var category = goUntilParent(node, "menuCategory").getElementsByClassName("itemListName")[0].innerHTML;
     document.getElementById("dialogDescription").innerHTML = descrip;
     document.getElementById("optionsTitle").innerHTML = title;
-    var dialog = document.getElementById("ordrinMenu").getElementsByClassName("optionsDialog")[0];
+    var dialog = document.getElementById("optionsDialog");
     dialog.setAttribute("data-miid", id);
     dialog.setAttribute("data-title", title);
     dialog.setAttribute("data-category", category);
@@ -85,19 +83,19 @@
       name = "optionsDialog";
     }
     // gray out background
-    var background = menu.getElementsByClassName("dialogBg")[0]; 
+    var background = document.getElementById("dialogBg");
     // show background
     background.className = background.className.replace("hidden", "");
 
     // show the dialog
-    var dialog = document.getElementById("ordrinMenu").getElementsByClassName(name)[0];
+    var dialog = document.getElementById(name);
     dialog.className = dialog.className.replace("hidden", "");
   }
 
   // checks if dialog is closable, and closes it if so
   function closeOptionsDialog(){
     var textarea = document.getElementsByClassName("editBox")[0];
-    var id       = document.getElementById("ordrinMenu").getElementsByClassName("optionsDialog")[0].getAttribute('data-miid');
+    var id       = document.getElementById("optionsDialog").getAttribute('data-miid');
     if (textarea.value === "" || textarea.value === "Does anything need to be changed?"
         || textarea.value == menuEdits[category][id]){
       hideDialogBox();
@@ -109,8 +107,8 @@
   }
 
   function hideDialogBox(){
-    var background     = menu.getElementsByClassName("dialogBg")[0];
-    var dialog         = document.getElementById("ordrinMenu").getElementsByClassName("optionsDialog")[0];
+    var background     = document.getElementById("dialogBg");
+    var dialog         = document.getElementById("optionsDialog");
     
     if (dialog.className.indexOf("hidden") == -1){
       // hide the background and dialog box
@@ -119,17 +117,28 @@
       // remove elements in option container
       var optionContainer = document.getElementById("optionContainer");
       optionContainer.removeChild(optionContainer.getElementsByClassName("optionCategoryList")[0]);
+      // reset edit box
+      var editBox   = dialog.getElementsByClassName("editBox")[0];
+      editBox.value = "Does anything need to be changed?";
+      editBox.removeAttribute("disabled");
+
+      // remove red border if there
+      var editError = dialog.getElementsByClassName("editError")[0];
+      if (editError.className.indexOf("hidden") == -1){
+        editError.className += " hidden";
+      }
+      editBox.className = editBox.className.replace("redBorder", "");
 
       document.getElementById("deleteItem").checked = false;
     }
   }
 
   function addTrayItem(){
-    var dialog = document.getElemenyById("ordrinMenu").getElementsByClassName("optionsDialog")[0];
+    var dialog = document.getElementById("ordrinMenu").getElementsByClass("optionsDialog")[0]
     var id = dialog.getAttribute("data-miid")
-    var item = document.getElementById("optionsTitle").innerHTML
+    var item = dialog.getElementsByClass("optionsTitle")[0].innerHTML
     var category = dialog.getAttribute("data-category")
-    
+
     check_boxes = dialog.getElementsByClassName("optionCheckbox")
     for(var i=0; i<check_boxes.length; i++){
       
