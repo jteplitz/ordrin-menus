@@ -368,10 +368,10 @@ body{
   color: #d2142e;
   float: left;
   width: 70%;
+  padding: 0;
 }
 .mItem-add-to-tray .menu-hd .boxright .slim-col {
   font-size: 18px;
-  width: 20%;
   text-align: right;
 }
 .mItem-add-to-tray .desc {
