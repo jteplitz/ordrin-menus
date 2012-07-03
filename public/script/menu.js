@@ -2,7 +2,9 @@ var ordrin = {};
 
 (function(){
   "use strict";
-  
+
+  var elements = {}; // variable to store elements so we don't have to continually DOM them
+
   function listen(evnt, elem, func) {
     if (elem.addEventListener)  // W3C DOM
       elem.addEventListener(evnt,func,false);
@@ -30,6 +32,7 @@ var ordrin = {};
   }
 
   listen("DOMContentLoaded", window, function(){
+    getElements();
     listen("click", document, clicked);
   });
 
@@ -40,8 +43,7 @@ var ordrin = {};
     // call the appropiate function based on what element was actually clicked
     var routes = {  
       menuItem    : createDialogBox,
-      closeDialog : hideDialogBox,
-      deleteItem: deleteItem,
+      closeDialog : hideDialogBox
     }
 
     var name = event.srcElement.getAttribute("data-listener");
@@ -63,10 +65,9 @@ var ordrin = {};
     var category = goUntilParent(node, "menuCategory").getElementsByClassName("itemListName")[0].innerHTML;
     document.getElementById("dialogDescription").innerHTML = descrip;
     document.getElementById("optionsTitle").innerHTML = title;
-    var dialog = document.getElementById("optionsDialog");
-    dialog.setAttribute("data-miid", id);
-    dialog.setAttribute("data-title", title);
-    dialog.setAttribute("data-category", category);
+    elements.dialog.setAttribute("data-miid", id);
+    elements.dialog.setAttribute("data-title", title);
+    elements.dialog.setAttribute("data-category", category);
 
     // clone the options
     node = node.getElementsByClassName("optionCategoryList")[0].cloneNode(true);
@@ -80,24 +81,19 @@ var ordrin = {};
     showDialogBox();
   }
 
-  function showDialogBox(name){
-    if (typeof name === "undefined"){
-      name = "optionsDialog";
-    }
+  function showDialogBox(){
     // gray out background
-    var background = document.getElementById("dialogBg");
     // show background
-    background.className = background.className.replace("hidden", "");
+    elements.dialogBg.className = elements.dialogBg.className.replace("hidden", "");
 
     // show the dialog
-    var dialog = document.getElementById(name);
-    dialog.className = dialog.className.replace("hidden", "");
+    elements.dialog.className = elements.dialog.className.replace("hidden", "");
   }
 
   // checks if dialog is closable, and closes it if so
   function closeOptionsDialog(){
     var textarea = document.getElementsByClassName("editBox")[0];
-    var id       = document.getElementById("optionsDialog").getAttribute('data-miid');
+    var id       = elements.dialog.getAttribute('data-miid');
     if (textarea.value === "" || textarea.value === "Does anything need to be changed?"
         || textarea.value == menuEdits[category][id]){
       hideDialogBox();
@@ -109,23 +105,20 @@ var ordrin = {};
   }
 
   function hideDialogBox(){
-    var background     = document.getElementById("dialogBg");
-    var dialog         = document.getElementById("optionsDialog");
-    
-    if (dialog.className.indexOf("hidden") == -1){
+    if (elements.dialog.className.indexOf("hidden") == -1){
       // hide the background and dialog box
-      background.className += " hidden";
-      dialog.className     += " hidden";
+      elements.dialogBg.className   += " hidden";
+      elements.dialog.className     += " hidden";
       // remove elements in option container
       var optionContainer = document.getElementById("optionContainer");
       optionContainer.removeChild(optionContainer.getElementsByClassName("optionCategoryList")[0]);
       // reset edit box
-      var editBox   = dialog.getElementsByClassName("editBox")[0];
+      var editBox   = elements.dialog.getElementsByClassName("editBox")[0];
       editBox.value = "Does anything need to be changed?";
       editBox.removeAttribute("disabled");
 
       // remove red border if there
-      var editError = dialog.getElementsByClassName("editError")[0];
+      var editError = elements.dialog.getElementsByClassName("editError")[0];
       if (editError.className.indexOf("hidden") == -1){
         editError.className += " hidden";
       }
@@ -136,12 +129,11 @@ var ordrin = {};
   }
 
   function addTrayItem(){
-    var dialog = document.getElementById("ordrinMenu").getElementsByClass("optionsDialog")[0]
-    var id = dialog.getAttribute("data-miid")
-    var item = dialog.getElementsByClass("optionsTitle")[0].innerHTML
-    var category = dialog.getAttribute("data-category")
+    var id = elements.dialog.getAttribute("data-miid")
+    var item = elements.dialog.getElementsByClass("optionsTitle")[0].innerHTML
+    var category = elements.dialog.getAttribute("data-category")
 
-    check_boxes = dialog.getElementsByClassName("optionCheckbox")
+    check_boxes = elements.dialog.getElementsByClassName("optionCheckbox")
     for(var i=0; i<check_boxes.length; i++){
       
     }
@@ -183,4 +175,12 @@ var ordrin = {};
       }
     }  
   };
+
+
+  // UTILITY FUNCTIONS
+  function getElements(){
+    var menu          = document.getElementById("ordrinMenu");
+    elements.dialog   = menu.getElementsByClassName("optionsDialog")[0];
+    elements.dialogBg = menu.getElementsByClassName("dialogBg")[0];
+  }
 })();
