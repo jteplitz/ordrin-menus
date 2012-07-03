@@ -142,19 +142,20 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
 
   function addTrayItem(){
     var id = elements.dialog.getAttribute("data-miid");
-    var quantity = elements.dialog.getElementsByClassName("itemQuantity").value;
+    var quantity = elements.dialog.getElementsByClassName("itemQuantity")[0].value;
     var checkBoxes = elements.dialog.getElementsByClassName("optionCheckbox");
     var options = [];
     for(var i=0; i<checkBoxes.length; i++){
       if(checkBoxes[i].checked){
         var listItem = goUntilParent(checkBoxes[i], "option")
         var optionId = listItem.getAttribute("data-moid");
-        var optionName = listItem.getElementsByClassName("optionName").textContent
+        var optionName = listItem.getElementsByClassName("optionName")[0].textContent
         var option = new Option(optionId, optionName)
         options.push(option);
       }
     }
-    var trayItem = new TrayItem(id, quantity, options);
+    var itemName = elements.dialog.getElementsByClassName("itemTitle")[0].textContent
+    var trayItem = new TrayItem(id, quantity, options, itemName);
     ordrin.tray.addItem(trayItem);
     hideDialogBox();
   }
