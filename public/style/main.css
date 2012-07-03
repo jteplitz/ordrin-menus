@@ -234,3 +234,7 @@ body{
   border: none;
   margin-bottom: 15px;
 }
+.menuList{
+  width: 80%;
+  float: left;
+}
