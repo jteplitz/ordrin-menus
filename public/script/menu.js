@@ -92,16 +92,7 @@ var ordrin = {};
 
   // checks if dialog is closable, and closes it if so
   function closeOptionsDialog(){
-    var textarea = document.getElementsByClassName("editBox")[0];
-    var id       = elements.dialog.getAttribute('data-miid');
-    if (textarea.value === "" || textarea.value === "Does anything need to be changed?"
-        || textarea.value == menuEdits[category][id]){
-      hideDialogBox();
-    }else{
-      textarea.className += " redBorder";
-      var editError = goUntilParent(textarea, "editBoxContainer").getElementsByClassName("editError")[0];
-      editError.className = editError.className.replace("hidden", "");
-    }
+    hideDialogBox();
   }
 
   function hideDialogBox(){
@@ -112,17 +103,6 @@ var ordrin = {};
       // remove elements in option container
       var optionContainer = document.getElementById("optionContainer");
       optionContainer.removeChild(optionContainer.getElementsByClassName("optionCategoryList")[0]);
-      // reset edit box
-      var editBox   = elements.dialog.getElementsByClassName("editBox")[0];
-      editBox.value = "Does anything need to be changed?";
-      editBox.removeAttribute("disabled");
-
-      // remove red border if there
-      var editError = elements.dialog.getElementsByClassName("editError")[0];
-      if (editError.className.indexOf("hidden") == -1){
-        editError.className += " hidden";
-      }
-      editBox.className = editBox.className.replace("redBorder", "");
 
       document.getElementById("deleteItem").checked = false;
     }
