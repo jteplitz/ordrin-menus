@@ -3,66 +3,7 @@
   margin-left: auto;
   text-align: center;
 }
-
-.grayLine{
-  border-bottom: 1px solid #E6E6DC;
-  padding-bottom: 8px;
-}
-
-#nav{
-  text-align: right;
-}
-
-#nav .loginLink{
-  margin: 0;
-}
-
-.noFloat{
-  float: none !important;
-}
-
-.icon{
-  background-image: url(../images/glyphicons-halflings.png);
-}
-
 /* form styling */
-.inputContainer label{
-  display: inline-block;
-  margin-bottom: 5px;
-  width: 100px;
-}
-
-.inputContainer .textInput{
-  width: 260px;
-  background-color: white;
-  border: 1px solid #CCC;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
-  -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
-  -ms-transition: border linear 0.2s, box-shadow linear 0.2s;
-  -o-transition: border linear 0.2s, box-shadow linear 0.2s;
-  transition: border linear 0.2s, box-shadow
-  height: 18px;
-  line-height: 18px;
-  padding: 4px;
-}
-
-.inputContainer .textInput:focus{
-  border-color: rgba(82, 168, 236, 0.8);
-  outline: 0;
-  outline: thin dotted \9;
-  /* IE6-9 */
-
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-}
-
 .close-popup-box {
   position: relative;
   top: -18px;
@@ -71,7 +12,6 @@
   width: 56px;
   float: left;
 }
-
 .popup-box-container{
   border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -85,7 +25,6 @@
   -moz-box-shadow: 3px 3px 15px 0 #222222;
   -webkit-box-shadow: 3px 3px 15px 0 #222222;
 }
-
 .dialog{
   z-index: 1050;
   position: fixed;
@@ -101,24 +40,17 @@
   -webkit-border-radius: 6px;
   border-radius: 6px;
 }
-
 .closeDialog{
   position: absolute;
   top: 0;
   left: 0;
   clip: rect(0 56px 57px 0);
 }
-
 .closeDialog:hover {
   clip: rect(57px 56px 114px 0);
   top: -57px;
   cursor: pointer;
 }
-
-.dialog .afterHeader{
-  float: left;
-}
-
 .popup-container{
   position: fixed;
   top: 0;
@@ -126,7 +58,6 @@
   margin: 0;
   z-index: 2006;
 }
-
 .fade-to-gray, .fade-to-white {
   position: fixed;
   top: 0;
@@ -136,7 +67,6 @@
   width: 100%;
   z-index: 2005;
 }
-
 .fade-to-gray {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
@@ -160,181 +90,26 @@
   filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#DC372D', endColorstr='#A5281E');
   color: #FFFFFF;
 }
-
-.recapitalize {
-  text-transform: capitalize;
-}
-
-.page_title {
-  color: black;
-  font: 400 28px 'Paytone One', 'Arial Black', sans-serif;
-  margin-bottom: 20px;
-}
-
-.page_title.restaurant_name {
-  width: 500px;
-}
-
 /**
- 
  Ordr.in colors:
 - Red: #d2142e, #ce1726;
 - Orange: #ff4038
 - Blue: #8ed4ce;
 - Salmon: #ff6762;
-
 **/
-
 body {
     font-family: Arial, Helvetica, sans-serif;
 }
-
-
 /********HEADER********/
-#nineSeventyTwo {
-    width: 972px;
-    margin: auto;
-}
-
-#headerLarge {
-    padding:15px 0;
-    height: 30px;
-    margin-bottom: 40px;
-    min-width: 100%;
-    -webkit-box-shadow: 0px 4px 5px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow:    0px 4px 5px rgba(50, 50, 50, 0.75);
-    box-shadow:         0px 4px 5px rgba(50, 50, 50, 0.75);
-    z-index: -99;
-}
-
-#header {
-    padding:0px 0;
-    height: auto;
-    min-width: 100%;
-    /*-webkit-box-shadow: 0px 4px 5px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow:    0px 4px 5px rgba(50, 50, 50, 0.75);
-    box-shadow:         0px 4px 5px rgba(50, 50, 50, 0.75);*/
-    float: left;
-}
-
-#headerImages {
-    /*background: url('../images/waves-1147.original.png') repeat-x; */
-    height: 30px;
-}
-
-
-
-#nav {
-    width: 470px;
-    float: right;
-    /*padding-top: 17px;*/
-}
-
-#header li, #actionList li {
-    display: inline;
-    font-family: "Paytone One", "Arial Black", sans-serif;
-    padding-right: 2px;
-    padding-left: 2px;
-    color: #000;
-    font-size: 14px;
-}
-
-li a {
-    color: #ce1726;
-}
-
-li a:hover {
-    color: #ff4038;
-}
-
-#active {
-    color: #ff4038;
-}
-
-#logo {
-    /*padding-bottom: 10px;*/
-    /*padding-left: 15px;*/
-    /*padding-top: 5px;*/
-    /*margin-top: 10px;*/
-}
-
-.loggedIn {
-    font-size: 10px !important;
-    float: right;
-    margin-right: 10px;
-    color: #000;
-}
-
-.loggedIn a {
-    color: #000;
-}
 /*end of header*/
-
 /********BODY********/
-#wrapper {
-    width: 972px;
-    padding: 10px;
-    padding-top: 0px;
-    margin: auto;
-}
-
-#content {
-    width: 100%;
-}
-
 h1 {
     font-family: "Arial Black", Arial, Helvetica, sans-serif;
     font-size: 30px;
     padding-bottom: 20px;
     padding-top: 30px;
 }
-
-#wrapper p {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.twoCols ul li a {
-    font-family: "Arial Black", Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    display: block;
-    text-transform: none;
-    }
-    
-#col1 {
-    float: left;
-}
-
-#col2 {
-    float: right;
-}
-
 /********ADD PHOTOS PAGE********/
-#foursquareURL {
-    width: 510px;
-    height: 50px;
-    font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
-    padding-left: 10px;
-}
-
-#sub {
-  width: 75px;
-  height: 55px;
-  background: #e36d7a; /* Old browsers */
-  background: -moz-linear-gradient(top,  #e36d7a 0%, #bc2032 50%, #981625 51%, #ee3a4f 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e36d7a), color-stop(50%,#bc2032), color-stop(51%,#981625), color-stop(100%,#ee3a4f)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* IE10+ */
-  background: linear-gradient(to bottom,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e36d7a', endColorstr='#ee3a4f',GradientType=0 ); /* IE6-9 */
-  color: #fff;
-  font-family: "Paytone One", sans-serif;
-  font-size: 14px;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
 /********ADD PHOTOS 2********/
  address {
     border: 5px solid #d2142e;
@@ -343,119 +118,5 @@ h1 {
     margin-bottom: 20px;
     width: 610px;
 }
-
-#yes, #no {
-  width: 75px;
-  height: 30px;
-  background: #e36d7a; /* Old browsers */
-  background: -moz-linear-gradient(top,  #e36d7a 0%, #bc2032 50%, #981625 51%, #ee3a4f 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e36d7a), color-stop(50%,#bc2032), color-stop(51%,#981625), color-stop(100%,#ee3a4f)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* IE10+ */
-  background: linear-gradient(to bottom,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e36d7a', endColorstr='#ee3a4f',GradientType=0 ); /* IE6-9 */
-  color: #fff;
-  font-family: "Paytone One", sans-serif;
-  font-size: 14px;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.bold {
-    font-weight: bold;
-}
-
-.error {
-    width: 625px;
-    border: 2px solid #cc0000;
-    background: #ffeeee;
-    margin-bottom: 30px;
-    padding: 10px;
-    color: #cc0000;
-}
-
 /********PHOTOS 4********/
-#query {
-    width: 400px;
-    font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
-    height: 30px;
-}
-
-#modalContent {
-    padding: 15px;
-    margin: auto;
-    width: 70%;
-}
-
-#subQuery {
-        width: 75px;
-    height: 30px;
-background: #e36d7a; /* Old browsers */
-background: -moz-linear-gradient(top,  #e36d7a 0%, #bc2032 50%, #981625 51%, #ee3a4f 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e36d7a), color-stop(50%,#bc2032), color-stop(51%,#981625), color-stop(100%,#ee3a4f)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* IE10+ */
-background: linear-gradient(to bottom,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e36d7a', endColorstr='#ee3a4f',GradientType=0 ); /* IE6-9 */
-    color: #fff;
-    font-family: "Paytone One", sans-serif;
-    font-size: 14px;
-    text-transform: uppercase;
-}
-
-#keep {
-        width: 215px;
-    height: 30px;
-background: #e36d7a; /* Old browsers */
-background: -moz-linear-gradient(top,  #e36d7a 0%, #bc2032 50%, #981625 51%, #ee3a4f 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e36d7a), color-stop(50%,#bc2032), color-stop(51%,#981625), color-stop(100%,#ee3a4f)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* IE10+ */
-background: linear-gradient(to bottom,  #e36d7a 0%,#bc2032 50%,#981625 51%,#ee3a4f 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e36d7a', endColorstr='#ee3a4f',GradientType=0 ); /* IE6-9 */
-    color: #fff;
-    font-family: "Paytone One", sans-serif;
-    font-size: 14px;
-    text-transform: uppercase;
-}
-
 /********FOOTER********/
-#footer {
-    padding:15px 0;
-    height: auto;
-    width: 100%;
-    float: left;
-    position: inherit;
-}
-
-#footer.sticky{
-  position: fixed;
-  bottom: 10px;
-}
-
-#footer p {
-    width: 20%;
-    margin: auto;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 10px;
-    color: #ce1726;
-}
-
-#footer a:link {
-    text-decoration: underline;
-    color: #000;
-}
-
-#footer a:visited {
-    text-decoration: underline;
-    color: #ff4038;
-}
-
-#footer a:hover {
-    text-decoration: underline;
-    color: #ff4038;
-}
