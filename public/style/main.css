@@ -100,17 +100,12 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
 }
-/********HEADER********/
-/*end of header*/
-/********BODY********/
 h1 {
     font-family: "Arial Black", Arial, Helvetica, sans-serif;
     font-size: 30px;
     padding-bottom: 20px;
     padding-top: 30px;
 }
-/********ADD PHOTOS PAGE********/
-/********ADD PHOTOS 2********/
  address {
     border: 5px solid #d2142e;
     padding: 15px;
@@ -118,5 +113,125 @@ h1 {
     margin-bottom: 20px;
     width: 610px;
 }
-/********PHOTOS 4********/
-/********FOOTER********/
+ul{
+  list-style-type: none;
+  padding-left: 0;
+}
+body{
+  font-weight: normal;
+  font-family: "Helvetica";
+  font-size: 15px;
+  padding-left: 10px;
+}
+.header{
+  font-weight: bold;
+  font-size: 18px;
+}
+.hidden{
+  display: none;
+}
+.price{
+  padding-right: 5px;
+}
+.clear{
+  clear: both;
+}
+.optionCategory{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.option{
+  width: 210px;
+  float: left;
+  padding-left: 10px;
+}
+/* photos */
+/* Menu */
+/*=== the div that shows the info of the restaurant you selected on the menu page ===*/
+/*======menu styles======*/
+/* menu header*/
+.menu-hd {
+  border-bottom: 1px solid #e6e6dc;
+  padding-bottom: 8px;
+}
+.menu-hd p:first-child, .header {
+  font-weight: bold;
+  font-size: 16px;
+  color: #d2142e;
+  padding-bottom: 5px;
+}
+/* menu items */
+.menu {
+  margin-bottom: 6px;
+  overflow: hidden;
+}
+.menu li p {
+  margin: 0;
+}
+.menu li p:first-child {
+  width: 78%;
+}
+.menu li {
+  font-size: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #e6e6dc;
+  display: inline-block;
+  width: 47%;
+  overflow: hidden;
+  position: relative;
+  height: 14px;
+}
+.menu li:nth-of-type(2n + 1){
+  margin-right: 16px;
+}
+.menu>li:first-child + li + li {
+  margin-right: 16px;
+}
+.mi > ul {
+  display:none;
+}
+.mi{
+  display: block;
+}
+.menu li:hover {
+  cursor: pointer;
+  background: #f9f8ed;
+}
+.menu li .price {
+  text-align: right;
+  width: 22%;
+  color: #55544b;
+  position: absolute;
+  bottom: 8px;
+  right: 0;
+}
+/*popup menu item*/
+.mItem-add-to-tray {
+  font-size: 12px;
+}
+/* popup menu : heading of the menu item pop-up */
+.mItem-add-to-tray .boxright {
+  border-bottom: 1px dashed #a7a69b;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  padding-right: 10px;
+}
+.mItem-add-to-tray h1 {
+  font-weight: bold;
+  font-size: 18px;
+  color: #d2142e;
+  float: left;
+  width: 70%;
+  padding: 0;
+}
+.mItem-add-to-tray .menu-hd .boxright .slim-col {
+  font-size: 18px;
+  text-align: right;
+}
+.mItem-add-to-tray .desc {
+  padding-top: 5px;
+}
+.mItem-add-to-tray .menu-hd {
+  border: none;
+  margin-bottom: 15px;
+}
