@@ -156,7 +156,7 @@ var ordrin = {};
     var item = elements.dialog.getElementsByClassName("itemTitle")[0].innerHTML
     var category = elements.dialog.getAttribute("data-category")
 
-    var checkBoxes = dialog.getElementsByClassName("optionCheckbox")
+    var checkBoxes = elements.dialog.getElementsByClassName("optionCheckbox")
     var options = []
     for(var i=0; i<checkBoxes.length; i++){
       if(checkBoxes[i].checked){
