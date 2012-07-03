@@ -16,6 +16,15 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
     this.itemName = itemName;
     this.quantity = quantity;
     this.options  = options;
+
+    this.buildItemString = function(){
+      var string = this.itemId + "/" + this.quantity;
+
+      for (var i = 0; i< this.options.length; i++){
+        string += "," + this.options[i].id;
+      }
+      return string;
+    }
   }
 
   var Tray = function(items){
@@ -27,7 +36,15 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
       } else {
         this.items.push(item);
       }
-    }  
+    }
+
+    this.buildTrayString = function(){
+      var string = "";
+      for (var i = 0; i < this.items.length; i++){
+        string += "+" + this.items[i].buildItemString();
+      }
+      return string.substring(1); // remove that first plus
+    };
   };
 
   ordrin.tray = new Tray([])
