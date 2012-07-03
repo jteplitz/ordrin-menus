@@ -3,6 +3,8 @@ var ordrin = {};
 (function(){
   "use strict";
 
+  var elements = {}; // variable to store elements so we don't have to continually DOM them
+
   // ordrin api classes
   var TrayItem = function(itemId, quantity, options){
     this.itemId   = itemId;
@@ -69,6 +71,7 @@ var ordrin = {};
   }
 
   listen("DOMContentLoaded", window, function(){
+    getElements();
     listen("click", document, clicked);
   });
 
@@ -100,12 +103,11 @@ var ordrin = {};
     var descrip = node.getElementsByClassName("menuItemDescription")[0].innerHTML;
     var id      = node.getAttribute("data-miid");
     var category = goUntilParent(node, "menuCategory").getElementsByClassName("itemListName")[0].innerHTML;
-    document.getElementById("ordrinMenu").getElementsByClassName("dialogDescription")[0].innerHTML = descrip;
-    document.getElementById("ordrinMenu").getElementsByClassName("optionsTitle")[0].innerHTML = title;
-    var dialog = document.getElementById("ordrinMenu").getElementsByClassName("optionsDialog")[0];
-    dialog.setAttribute("data-miid", id);
-    dialog.setAttribute("data-title", title);
-    dialog.setAttribute("data-category", category);
+    document.getElementById("dialogDescription").innerHTML = descrip;
+    document.getElementById("optionsTitle").innerHTML = title;
+    elements.dialog.setAttribute("data-miid", id);
+    elements.dialog.setAttribute("data-title", title);
+    elements.dialog.setAttribute("data-category", category);
 
     // clone the options
     node = node.getElementsByClassName("optionCategoryList")[0].cloneNode(true);
@@ -119,18 +121,12 @@ var ordrin = {};
     showDialogBox();
   }
 
-  function showDialogBox(name){
-    if (typeof name === "undefined"){
-      name = "optionsDialog";
-    }
-    // gray out background
-    var background = document.getElementById("ordrinMenu").getElementsByClassName("dialogBg")[0];
+  function showDialogBox(){
     // show background
-    background.className = background.className.replace("hidden", "");
+    elements.dialogBg.className = elements.dialogBg.className.replace("hidden", "");
 
     // show the dialog
-    var dialog = document.getElementById("ordrinMenu").getElementsByClassName(name)[0];
-    dialog.className = dialog.className.replace("hidden", "");
+    elements.dialog.className = elements.dialog.className.replace("hidden", "");
   }
 
   // checks if dialog is closable, and closes it if so
@@ -139,17 +135,14 @@ var ordrin = {};
   }
 
   function hideDialogBox(){
-    var background     = document.getElementById("ordrinMenu").getElementsByClassName("dialogBg")[0];
-    var dialog         = document.getElementById("ordrinMenu").getElementsByClassName("optionsDialog")[0];
-    
-    if (dialog.className.indexOf("hidden") == -1){
+    if (elements.dialog.className.indexOf("hidden") == -1){
       // hide the background and dialog box
-      background.className += " hidden";
-      dialog.className     += " hidden";
+      elements.dialogBg.className   += " hidden";
+      elements.dialog.className     += " hidden";
       // remove elements in option container
       var optionContainer = document.getElementById("ordrinMenu").getElementsByClassName("optionContainer")[0];
       optionContainer.removeChild(optionContainer.getElementsByClassName("optionCategoryList")[0]);
-      checkBoxes = dialog.getElementsByClassName("optionCheckbox");
+      checkBoxes = elements.dialog.getElementsByClassName("optionCheckbox");
       for(var i=0; i<checkBoxes.length; i++){
         checkBoxes[i].checked = false;
       }
@@ -168,9 +161,17 @@ var ordrin = {};
     for(var i=0; i<checkBoxes.length; i++){
       if(checkBoxes[i].checked){
         option = goUntilParent(checkBoxes[i], "option").getAttribute("data-moid")
+        options.push(option)
       }
     }
     trayItem = new TrayItem(id, quantity, options)
     ordrin.tray.addItem(trayItem)
+  }
+
+  // UTILITY FUNCTIONS
+  function getElements(){
+    var menu          = document.getElementById("ordrinMenu");
+    elements.dialog   = menu.getElementsByClassName("optionsDialog")[0];
+    elements.dialogBg = menu.getElementsByClassName("dialogBg")[0];
   }
 })();
