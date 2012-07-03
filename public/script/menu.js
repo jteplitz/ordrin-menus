@@ -144,7 +144,7 @@ var ordrin = {};
       // remove elements in option container
       var optionContainer = elements.dialog.getElementsByClassName("optionContainer")[0];
       optionContainer.removeChild(optionContainer.getElementsByClassName("optionCategoryList")[0]);
-      checkBoxes = elements.dialog.getElementsByClassName("optionCheckbox");
+      var checkBoxes = elements.dialog.getElementsByClassName("optionCheckbox");
       for(var i=0; i<checkBoxes.length; i++){
         checkBoxes[i].checked = false;
       }
@@ -156,8 +156,8 @@ var ordrin = {};
     var item = elements.dialog.getElementsByClassName("itemTitle")[0].innerHTML
     var category = elements.dialog.getAttribute("data-category")
 
-    checkBoxes = dialog.getElementsByClassName("optionCheckbox")
-    options = []
+    var checkBoxes = elements.dialog.getElementsByClassName("optionCheckbox")
+    var options = []
     for(var i=0; i<checkBoxes.length; i++){
       if(checkBoxes[i].checked){
         option = goUntilParent(checkBoxes[i], "option").getAttribute("data-moid")
