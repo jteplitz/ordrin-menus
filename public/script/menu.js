@@ -1,37 +1,25 @@
-var ordrin = {};
+var ordrin = ordrin instanceof Object ? ordrin : {};
 
 (function(){
   "use strict";
 
   var elements = {}; // variable to store elements so we don't have to continually DOM them
 
+  var Option = function(id, name){
+    this.id = id
+    this.name = name
+  }
+
   // ordrin api classes
-  var TrayItem = function(itemId, quantity, options){
+  var TrayItem = function(itemId, quantity, options, itemName){
     this.itemId   = itemId;
+    this.itemName = itemName;
     this.quantity = quantity;
     this.options  = options;
-
-    this.buildItemString = function(){
-      var string = this.itemId + "/" + this.quantity;
-
-      for (var i = 0; i< this.options.length; i++){
-        string += "," + this.options[i];
-      }
-      return string;
-    }
-
   }
 
   var Tray = function(items){
     this.items = items;
-
-    this.buildTrayString = function(){
-      var string = "";
-      for (var i = 0; i < this.items.length; i++){
-        string += "+" + this.items[i].buildItemString();
-      }
-      return string.substring(1); // remove that first plus
-    };
 
     this.addItem = function(item){
       if (!(item instanceof TrayItem)){
@@ -55,10 +43,11 @@ var ordrin = {};
 
   function goUntilParent(node, targetClass){
     console.log(node);
-    if (node.className.indexOf(targetClass) === -1){
+    var re = new RegExp("\\b"+targetClass+"\\b")
+    if (node.className.match(re) === null){
       while(node.parentNode !== document){
         node = node.parentNode;
-        if (node.className.indexOf(targetClass) === -1){
+        if (node.className.match(re) === null){
           continue;
         }else{
           break;
@@ -152,20 +141,22 @@ var ordrin = {};
   }
 
   function addTrayItem(){
-    var id = elements.dialog.getAttribute("data-miid")
-    var item = elements.dialog.getElementsByClassName("itemTitle")[0].innerHTML
-    var category = elements.dialog.getAttribute("data-category")
-
-    var checkBoxes = elements.dialog.getElementsByClassName("optionCheckbox")
-    var options = []
+    var id = elements.dialog.getAttribute("data-miid");
+    var quantity = elements.dialog.getElementsByClassName("itemQuantity").value;
+    var checkBoxes = elements.dialog.getElementsByClassName("optionCheckbox");
+    var options = [];
     for(var i=0; i<checkBoxes.length; i++){
       if(checkBoxes[i].checked){
-        option = goUntilParent(checkBoxes[i], "option").getAttribute("data-moid")
-        options.push(option)
+        var listItem = goUntilParent(checkBoxes[i], "option")
+        var optionId = listItem.getAttribute("data-moid");
+        var optionName = listItem.getElementsByClassName("optionName").textContent
+        var option = new Option(optionId, optionName)
+        options.push(option);
       }
     }
-    trayItem = new TrayItem(id, quantity, options)
-    ordrin.tray.addItem(trayItem)
+    var trayItem = new TrayItem(id, quantity, options);
+    ordrin.tray.addItem(trayItem);
+    hideDialogBox();
   }
 
   // UTILITY FUNCTIONS
