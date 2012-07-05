@@ -5,17 +5,19 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
 
   var elements = {}; // variable to store elements so we don't have to continually DOM them
 
-  var Option = function(id, name){
-    this.id = id
-    this.name = name
+  var Option = function(id, name, price){
+    this.id = id;
+    this.name = name;
+    this.price = price;
   }
 
   // ordrin api classes
-  var TrayItem = function(itemId, quantity, options, itemName){
+  var TrayItem = function(itemId, quantity, options, itemName, price){
     this.itemId   = itemId;
     this.itemName = itemName;
     this.quantity = quantity;
     this.options  = options;
+    this.price = price;
 
     this.buildItemString = function(){
       var string = this.itemId + "/" + this.quantity;
@@ -169,15 +171,49 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
       if(checkBoxes[i].checked){
         var listItem = goUntilParent(checkBoxes[i], "option")
         var optionId = listItem.getAttribute("data-moid");
-        var optionName = listItem.getElementsByClassName("optionName")[0].textContent
-        var option = new Option(optionId, optionName)
+        var optionName = listItem.getElementsByClassName("optionName")[0].textContent;
+        var optionPrice = listItem.getElementsByClassName("optionPrice")[0].textContent;
+        var option = new Option(optionId, optionName, optionPrice)
         options.push(option);
       }
     }
-    var itemName = elements.dialog.getElementsByClassName("itemTitle")[0].textContent
-    var trayItem = new TrayItem(id, quantity, options, itemName);
+    var itemName = elements.dialog.getElementsByClassName("itemTitle")[0].textContent;
+    var itemPrice = elements.dialog.getElementsByClassName("itemPrice")[0].textContent;
+    var trayItem = new TrayItem(id, quantity, options, itemName, itemPrice);
     ordrin.tray.addItem(trayItem);
+    addToPageTray(trayItem);
     hideDialogBox();
+  }
+
+  function addToPageTray(item){
+    var trayItem = document.createElement("li");
+    trayItem.className = "trayItem"
+    trayItem.setAttribute("data-listener", "editTrayItem")
+    var itemName = document.createElement("span");
+    itemName.className = "trayItemName";
+    itemName.appendChild(document.createTextNode(item.itemName));
+    trayItem.appendChild(itemName);
+    var itemPrice = document.createElement("span");
+    itemPrice.className = "trayItemPrice"
+    itemPrice.appendChild(document.createTextNode(item.price));
+    trayItem.appendChild(itemPrice)
+    var options = document.createElement("ul");
+    for(var i=0; i<item.options.length; i++){
+      var opt = item.options[i]
+      var option = document.createElement("li");
+      option.className = "trayOption";
+      var optionName = document.createElement("span");
+      optionName.className = "trayOptionName";
+      optionName.appendChild(document.createTextNode(opt.name));
+      option.appendChild(optionName);
+      var optionPrice = document.createElement("span");
+      optionPrice.className = "trayOptionPrice";
+      optionPrice.appendChild(document.createTextNode(opt.price));
+      option.appendChild(optionPrice);
+      options.appendChild(option);
+    }
+    trayItem.appendChild(options);
+    elements.tray.appendChild(trayItem);
   }
 
   // UTILITY FUNCTIONS
@@ -185,5 +221,6 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
     var menu          = document.getElementById("ordrinMenu");
     elements.dialog   = menu.getElementsByClassName("optionsDialog")[0];
     elements.dialogBg = menu.getElementsByClassName("dialogBg")[0];
+    elements.tray     = menu.getElementsByClassName("tray")[0];
   }
 })();
