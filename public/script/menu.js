@@ -76,6 +76,7 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
         options.appendChild(option);
       }
       item.appendChild(options);
+      this.trayItemNode = item;
       return item;
     }
   }
@@ -93,7 +94,19 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
     }
 
     this.removeItem = function(id){
-      items = items.filter(function(item) {return item.trayItemId!=id});
+      var removed;
+      var newItems = [];
+      var item;
+      for(var i=0; i<this.items.length; i++){
+        item = this.items[i];
+        if(item.id===id){
+          removed = item;
+        } else {
+          newItems.append(item);
+        }
+      }
+      elements.tray.removeChild(removed.trayItemNode);
+      this.items = newItems;
     }
 
     this.buildTrayString = function(){
@@ -143,9 +156,27 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
     }
   }
 
+  function extractAllItems(itemList){
+    var items = {};
+    var item;
+    for(var i=0; i<itemList.length; i++){
+      item = itemList[i];
+      items[item.id] = item;
+      var children = extractAllItems(item.children);
+      for(var id in children){
+        if(children.hasOwnProperty(id)){
+          items[id] = children[id];
+        }
+      }
+    }
+  }
+
+  allItems = {};
+
   listen("DOMContentLoaded", window, function(){
     getElements();
     listen("click", document, clicked);
+    allItems = extractAllItems(ordrin.menu);
   });
 
   function clicked(event){
@@ -157,7 +188,7 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
       menuItem    : createDialogBox,
       closeDialog : hideDialogBox,
       addToTray : addTrayItem,
-p      removeTrayItem : removeTrayItem,
+      removeTrayItem : removeTrayItem,
       optionCheckbox : validateCheckbox
     }
 
@@ -168,32 +199,55 @@ p      removeTrayItem : removeTrayItem,
     }
   }
 
+  function getChildWithClass(node, className){
+    for(var i=0; i<node.children.length; i++){
+      if(node.children[i].className.indexOf(className)>=0){
+        return node.children[i];
+      }
+    }
+  }
+
+  function getElementsByClassName(node, className){
+    var re = new RegExp("\\b"+className+"\\b");
+    nodes = [];
+    for(var i=0; i<node.children.length; i++){
+      child = node.children[i];
+      if(re.test(child.className)){
+        nodes.append(child);
+      }
+      nodes = nodes.concat(getElementsByClassName(child, className));
+    }
+    return nodes;
+  }
+
   function createDialogBox(node){
     // get the correct node, if it's not the current one
     node = goUntilParent(node, "mi");
+    var itemId = node.getAttribute("data-miid");
+    var item = allItems[itemId];
 
     console.log(node.getElementsByClassName("name"));
     // put the name and description in the option box
-    var title   = node.getElementsByClassName("name")[0].innerHTML;
-    var price   = node.getElementsByClassName("price")[0].innerHTML;
-    var descrip = node.getElementsByClassName("menuItemDescription")[0].innerHTML;
-    var id      = node.getAttribute("data-miid");
-    var category = goUntilParent(node, "menuCategory").getElementsByClassName("itemListName")[0].innerHTML;
+    var title   = item.name;
+    var price   = item.price;
+    var descrip = item.descrip;
+    var category = category.name;
     elements.dialog.getElementsByClassName("dialogDescription")[0].innerHTML = descrip;
     elements.dialog.getElementsByClassName("itemTitle")[0].innerHTML = title;
     elements.dialog.getElementsByClassName("itemPrice")[0].innerHTML = price;
-    elements.dialog.setAttribute("data-miid", id);
+    elements.dialog.setAttribute("data-miid", itemId);
     elements.dialog.setAttribute("data-title", title);
     elements.dialog.setAttribute("data-category", category);
 
     // clone the options
-    node = node.getElementsByClassName("optionCategoryList")[0].cloneNode(true);
+    node = getChildWithClass(node, "optionCategoryList").cloneNode(true);
     
     // unhide themp
     node.className = node.className.replace("hidden", "");
 
     // put them in the dialog option container
-    elements.dialog.getElementsByClassName("optionContainer")[0].appendChild(node);
+    var container = getChildWithClass(elements.dialog, "popup-box-container");
+    getChildWithClass(container, "optionContainer").appendChild(node);
 
     showDialogBox();
   }
@@ -217,15 +271,16 @@ p      removeTrayItem : removeTrayItem,
       elements.dialogBg.className   += " hidden";
       elements.dialog.className     += " hidden";
       // remove elements in option container
-      var optionContainer = elements.dialog.getElementsByClassName("optionContainer")[0];
-      optionContainer.removeChild(optionContainer.getElementsByClassName("optionCategoryList")[0]);
+      var container = getChildWithClass(elements.dialog, "popup-box-container");
+      var optionContainer = getChildWithClass(container, "optionContainer");
+      emptyNode(optionContainer);
       var checkBoxes = elements.dialog.getElementsByClassName("optionCheckbox");
       for(var i=0; i<checkBoxes.length; i++){
         checkBoxes[i].checked = false;
       }
 
       // reset quantity
-      elements.dialog.getElementsByClassName("itemQuantity")[0].value = 1;
+      getChildWithClass(container, "itemQuantity").value = 1;
     }
   }
 
@@ -238,15 +293,16 @@ p      removeTrayItem : removeTrayItem,
 
   function validateCheckbox(node){
     var category = goUntilParent(node, "optionCategory");
-    validateCategory(category);
+    validateGroup(category);
   }
 
-  function validateCategory(category){
-    var min = +(category.getAttribute("data-min"));
-    var max = +(category.getAttribute("data-max"));
-    var checkBoxes = category.getElementsByClassName("optionCheckbox");
+  function validateGroup(groupNode){
+    var group = allItems[group.getAttribute("data-mogid")];
+    var min = +(allItems.min_child_select);
+    var max = +(allItems.max_child_select);
+    var checkBoxes = groupNode.getElementsByClassName("optionCheckbox");
     var checked = 0;
-    var errorNode = category.getElementsByClassName("error")[0];
+    var errorNode = getChildWithClass(groupNode, "error");
     emptyNode(errorNode);
     for(var j=0; j<checkBoxes.length; j++){
       if(checkBoxes[j].checked){
@@ -272,12 +328,13 @@ p      removeTrayItem : removeTrayItem,
 
   function addTrayItem(){
     var id = elements.dialog.getAttribute("data-miid");
-    var quantity = elements.dialog.getElementsByClassName("itemQuantity")[0].value;
+    var form = document.forms["ordrin-dialog"];
+    var quantity = form.elements["itemQuantity"];
 
     var error = false;
     var categories = elements.dialog.getElementsByClassName("optionCategory");
     for(var i=0; i<categories.length; i++){
-      if(!validateCategory(categories[i])){
+      if(!validateGroup(categories[i])){
         error = true;
       }
     }
@@ -286,20 +343,20 @@ p      removeTrayItem : removeTrayItem,
       return;
     }
     
-    var checkBoxes = elements.dialog.getElementsByClassName("optionCheckbox");
+    var checkBoxes = form.options;
     var options = [];
     for(var i=0; i<checkBoxes.length; i++){
       if(checkBoxes[i].checked){
         var listItem = goUntilParent(checkBoxes[i], "option")
         var optionId = listItem.getAttribute("data-moid");
-        var optionName = listItem.getElementsByClassName("optionName")[0].textContent;
-        var optionPrice = listItem.getElementsByClassName("optionPrice")[0].textContent;
+        var optionName = allItems[optionId].name;
+        var optionPrice = allItems[optionId].price;
         var option = new Option(optionId, optionName, optionPrice)
         options.push(option);
       }
     }
-    var itemName = elements.dialog.getElementsByClassName("itemTitle")[0].textContent;
-    var itemPrice = elements.dialog.getElementsByClassName("itemPrice")[0].textContent;
+    var itemName = allItems[id].name;
+    var itemPrice = allItems[id].price;
     var trayItem = new TrayItem(id, quantity, options, itemName, itemPrice);
     ordrin.tray.addItem(trayItem);
     hideDialogBox();
