@@ -1,7 +1,120 @@
-var ordrin = ordrin instanceof Object ? ordrin : {};
+var ordrin = (ordrin instanceof Object) ? ordrin : {};
 
 (function(){
   "use strict";
+
+  var Mustache="undefined"!==typeof module&&module.exports||{};
+(function(j){function G(a){return(""+a).replace(/&(?!\w+;)|[<>"']/g,function(a){return H[a]||a})}function t(a,c,d,e){for(var e=e||"<template>",b=c.split("\n"),f=Math.max(d-3,0),g=Math.min(b.length,d+3),b=b.slice(f,g),i=0,l=b.length;i<l;++i)g=i+f+1,b[i]=(g===d?" >> ":"    ")+b[i];a.template=c;a.line=d;a.file=e;a.message=[e+":"+d,b.join("\n"),"",a.message].join("\n");return a}function u(a,c,d){if("."===a)return c[c.length-1];for(var a=a.split("."),e=a.length-1,b=a[e],f,g,i=c.length,l,j;i;){j=c.slice(0);
+g=c[--i];for(l=0;l<e;){g=g[a[l++]];if(null==g)break;j.push(g)}if(g&&"object"===typeof g&&b in g){f=g[b];break}}"function"===typeof f&&(f=f.call(j[j.length-1]));return null==f?d:f}function I(a,c,d,e){var b="",a=u(a,c);if(e){if(null==a||!1===a||q(a)&&0===a.length)b+=d()}else if(q(a))y(a,function(a){c.push(a);b+=d();c.pop()});else if("object"===typeof a)c.push(a),b+=d(),c.pop();else if("function"===typeof a)var f=c[c.length-1],b=b+(a.call(f,d(),function(a){return r(a,f)})||"");else a&&(b+=d());return b}
+function z(a,c){for(var c=c||{},d=c.tags||j.tags,e=d[0],b=d[d.length-1],f=['var buffer = "";',"\nvar line = 1;","\ntry {",'\nbuffer += "'],g=[],i=!1,l=!1,r=function(){if(i&&!l&&!c.space)for(;g.length;)f.splice(g.pop(),1);else g=[];l=i=!1},n=[],v,p,q,w=function(a){d=o(a).split(/\s+/);p=d[0];q=d[d.length-1]},x=function(a){f.push('";',v,'\nvar partial = partials["'+o(a)+'"];',"\nif (partial) {","\n  buffer += render(partial,stack[stack.length - 1],partials);","\n}",'\nbuffer += "')},u=function(b,d){var e=
+o(b);if(""===e)throw t(Error("Section name may not be empty"),a,s,c.file);n.push({name:e,inverted:d});f.push('";',v,'\nvar name = "'+e+'";',"\nvar callback = (function () {","\n  return function () {",'\n    var buffer = "";','\nbuffer += "')},y=function(a){u(a,!0)},z=function(b){var b=o(b),d=0!=n.length&&n[n.length-1].name;if(!d||b!=d)throw t(Error('Section named "'+b+'" was never opened'),a,s,c.file);b=n.pop();f.push('";',"\n    return buffer;","\n  };","\n})();");b.inverted?f.push("\nbuffer += renderSection(name,stack,callback,true);"):
+f.push("\nbuffer += renderSection(name,stack,callback);");f.push('\nbuffer += "')},A=function(a){f.push('";',v,'\nbuffer += lookup("'+o(a)+'",stack,"");','\nbuffer += "')},B=function(a){f.push('";',v,'\nbuffer += escapeHTML(lookup("'+o(a)+'",stack,""));','\nbuffer += "')},s=1,m,k,h=0,C=a.length;h<C;++h)if(a.slice(h,h+e.length)===e){h+=e.length;m=a.substr(h,1);v="\nline = "+s+";";p=e;q=b;i=!0;switch(m){case "!":h++;k=null;break;case "=":h++;b="="+b;k=w;break;case ">":h++;k=x;break;case "#":h++;k=u;
+break;case "^":h++;k=y;break;case "/":h++;k=z;break;case "{":b="}"+b;case "&":h++;l=!0;k=A;break;default:l=!0,k=B}m=a.indexOf(b,h);if(-1===m)throw t(Error('Tag "'+e+'" was not closed properly'),a,s,c.file);e=a.substring(h,m);k&&k(e);for(k=0;~(k=e.indexOf("\n",k));)s++,k++;h=m+b.length-1;e=p;b=q}else switch(m=a.substr(h,1),m){case '"':case "\\":l=!0;f.push("\\"+m);break;case "\r":break;case "\n":g.push(f.length);f.push("\\n");r();s++;break;default:D.test(m)?g.push(f.length):l=!0,f.push(m)}if(0!=n.length)throw t(Error('Section "'+
+n[n.length-1].name+'" was not closed properly'),a,s,c.file);r();f.push('";',"\nreturn buffer;","\n} catch (e) { throw {error: e, line: line}; }");b=f.join("").replace(/buffer \+= "";\n/g,"");c.debug&&("undefined"!=typeof console&&console.log?console.log(b):"function"===typeof print&&print(b));return b}function A(a,c){var d=z(a,c),e=new Function("view,partials,stack,lookup,escapeHTML,renderSection,render",d);return function(b,d){var d=d||{},g=[b];try{return e(b,d,g,u,G,I,r)}catch(i){throw t(i.error,
+a,i.line,c.file);}}}function B(a,c){c=c||{};return!1!==c.cache?(p[a]||(p[a]=A(a,c)),p[a]):A(a,c)}function r(a,c,d){return B(a)(c,d)}j.name="mustache.js";j.version="0.5.0-dev";j.tags=["{{","}}"];j.parse=z;j.compile=B;j.render=r;j.clearCache=function(){p={}};j.to_html=function(a,c,d,e){a=r(a,c,d);if("function"===typeof e)e(a);else return a};var J=Object.prototype.toString,C=Array.isArray,E=Array.prototype.forEach,F=String.prototype.trim,q;q=C?C:function(a){return"[object Array]"===J.call(a)};var y;
+y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length;e<b;++e)c.call(d,a[e],e,a)};var D=/^\s*$/,o;if(F)o=function(a){return null==a?"":F.call(a)};else{var w,x;D.test("\u00a0")?(w=/^\s+/,x=/\s+$/):(w=/^[\s\xA0]+/,x=/[\s\xA0]+$/);o=function(a){return a==null?"":(""+a).replace(w,"").replace(x,"")}}var H={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"},p={}})(Mustache);
+
+  if(!ordrin.hasOwnProperty("render")){
+    ordrin.render = true;
+  }
+  
+  if(!ordrin.hasOwnProperty("template")){
+    ordrin.template = [
+      "  <ul class=\"menuList\">",
+      "    {{#menu}}",
+      "      <li class=\"menuCategory\" data-mgid=\"{{id}}\">",
+      "        <div class=\"menu-hd\">",
+      "          <p class=\"header itemListName\" data-listener=\"itemListName\">{{name}}</p>",
+      "        </div>",
+      "        <ul class=\"itemList menu main-menu\">",
+      "          {{#children}}",
+      "            <li class=\"mi\" data-listener=\"menuItem\" data-miid=\"{{id}}\">",
+      "              <p class=\"name\" data-listener=\"menuItem\">{{name}}</p>",
+      "              <p>",
+      "                <span class=\"price\" data-listener=\"menuItem\">{{price}}</span>",
+      "              </p>",
+      "            </li>",
+      "          {{/children}}",
+      "        </ul>",
+      "      </li>",
+      "    {{/menu}}",
+      "  </ul>",
+      "  <div class=\"trayContainer\">",
+      "    <ul class=\"tray\">",
+      "    </ul>",
+      "  </div>",
+      "  <!-- Menu Item Dialog -->",
+      "  <div class=\"optionsDialog popup-container hidden\">",
+      "  </div>",
+      "  <div class=\"dialogBg fade-to-gray hidden\"></div>"
+    ].join("");
+  }
+
+  if(!ordrin.hasOwnProperty("dialogTemplate")){
+    ordrin.dialogTemplate = [
+      "    <div class=\"popup-box-container dialog\">",
+      "      <form name=\"ordrin-dialog\" onSubmit=\"return false;\">",
+      "        <div class=\"close-popup-box\">",
+      "          <img class=\"closeDialog\" data-listener=\"closeDialog\" src=\"https://fb.ordr.in/images/popup-close.png\" />",
+      "        </div>",
+      "        <div class=\"mItem-add-to-tray popup-content\">",
+      "          <div class=\"menu-hd\">",
+      "            <div class=\"boxright\">",
+      "              <h1 class=\"big-col itemTitle\">{{name}}</h1>",
+      "              <p class=\"slim-col itemPrice\">{{price}}</p>",
+      "            </div>",
+      "            <div class=\"clear\"></div>",
+      "          </div>",
+      "          <p class=\"desc dialogDescription\">{{descrip}}</p>",
+      "        </div>",
+      "        <div class=\"optionContainer\">",
+      "          <ul class=\"optionCategoryList\">",
+      "            {{#children}}",
+      "              <li data-mogid=\"{{id}}\" class=\"optionCategory\">",
+      "                <span class=\"header\">{{name}}</span>",
+      "                <span class=\"error\"></span>",
+      "                <ul class=\"optionList\">",
+      "                  {{#children}}",
+      "                    <li class=\"option\" data-moid=\"{{id}}\">",
+      "                      <input type=\"checkbox\" class=\"optionCheckbox\" data-listener=\"optionCheckbox\" name=\"options\" />",
+      "                      <span class=\"optionName\">{{name}}</span>",
+      "                      <span class=\"optionPrice\">{{price}}</span>",
+      "                    </li>",
+      "                  {{/children}}",
+      "                </ul>",
+      "                <div class=\"clear\"></div>",
+      "              </li>",
+      "            {{/children}}",
+      "          </ul>",      
+      "        </div>",
+      "        <label for=\"itemQuantity\">Quantity: </label>",
+      "        <input type=\"number\" class=\"itemQuantity\" name=\"itemQuantity\" value=\"1\" />",
+      "        <br />",
+      "        <input type=\"submit\" class=\"buttonRed\" data-listener=\"addToTray\" value=\"Add to Tray\" />",
+      "      </form>",
+      "    </div>"].join("");
+  }
+
+  if(!ordrin.hasOwnProperty("trayItemTemlate")){
+    ordrin.trayItemTemplate = [
+      "<li class=\"trayItem\" data-listener=\"editTrayItem\">",
+      "  <div class=\"trayItemRemove\" data-listener=\"removeTrayItem\">",
+      "     X",
+      "  </div>",
+      "  <span class=\"trayItemName\" data-listener=\"editTrayItem\">{{itemName}}</span>",
+      "  <span class=\"trayItemPrice\" data-listener=\"editTrayItem\">{{price}}</span>",
+      "  <span class=\"trayItemQuantity\" data-listener=\"editTrayItem\">({{quantity}})</span>",
+      "  <ul>",
+      "    {{#options}}",
+      "      <li class=\"trayOption\" data-listener=\"editTrayItem\">",
+      "        <span class=\"trayOptionName\" data-listener=\"editTrayItem\">{{name}}</span>",
+      "        <span class=\"trayOptionPrice\" data-listener=\"editTrayItem\">{{price}}</span>",
+      "      </li>",
+      "    {{/options}}",
+      "  </ul>",
+      "</li>",
+    ].join("");
+  }
 
   var elements = {}; // variable to store elements so we don't have to continually DOM them
 
@@ -14,14 +127,13 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
   var nextId = 0;
   
   // ordrin api classes
-  var TrayItem = function(itemId, quantity, options, itemName, price, menuItem){
+  var TrayItem = function(itemId, quantity, options, itemName, price){
     this.trayItemId = nextId++;
     this.itemId   = itemId;
     this.itemName = itemName;
     this.quantity = quantity;
     this.options  = options;
     this.price = price;
-    this.menuItem = menuItem;
 
     this.buildItemString = function(){
       var string = this.itemId + "/" + this.quantity;
@@ -33,51 +145,11 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
     }
 
     this.renderTrayHtml = function(){
-      var item = document.createElement("li");
-      item.className = "trayItem";
-      item.setAttribute("data-listener", "editTrayItem");
-      item.setAttribute("data-miid", item.itemId);
-      var itemRemove = document.createElement("div");
-      itemRemove.className = "trayItemRemove";
-      itemRemove.appendChild(document.createTextNode("X"))
-      itemRemove.setAttribute("data-listener", "removeTrayItem");
-      item.appendChild(itemRemove)
-      var itemName = document.createElement("span");
-      itemName.className = "trayItemName";
-      itemName.appendChild(document.createTextNode(item.itemName));
-      itemName.setAttribute("data-listener", "editTrayItem");
-      item.appendChild(itemName);
-      var itemPrice = document.createElement("span");
-      itemPrice.className = "trayItemPrice"
-      itemPrice.appendChild(document.createTextNode(item.price));
-      itemPrice.setAttribute("data-listener", "editTrayItem")
-      item.appendChild(itemPrice)
-      var itemQuantity = document.createElement("span");
-      itemQuantity.className = "trayItemQuantity";
-      itemQuantity.appendChild(document.createTextNode("("+item.quantity+")"));
-      itemQuantity.setAttribute("data-listener", "editTrayItem");
-      item.appendChild(itemQuantity);
-      var options = document.createElement("ul");
-      for(var i=0; i<item.options.length; i++){
-        var opt = item.options[i]
-        var option = document.createElement("li");
-        option.className = "trayOption";
-        option.setAttribute("data-listener", "editTrayItem")
-        var optionName = document.createElement("span");
-        optionName.className = "trayOptionName";
-        optionName.appendChild(document.createTextNode(opt.name));
-        optionName.setAttribute("data-listener", "editTrayItem")
-        option.appendChild(optionName);
-        var optionPrice = document.createElement("span");
-        optionPrice.className = "trayOptionPrice";
-        optionPrice.appendChild(document.createTextNode(opt.price));
-        optionPrice.setAttribute("data-listener", "editTrayItem")
-        option.appendChild(optionPrice);
-        options.appendChild(option);
-      }
-      item.appendChild(options);
-      this.trayItemNode = item;
-      return item;
+      var html = Mustache.render(ordrin.trayItemTemplate, this);
+      var div = document.createElement("div");
+      div.innerHTML = html;
+      this.trayItemNode = div.firstChild;
+      return this.trayItemNode;
     }
   }
 
@@ -162,21 +234,34 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
     for(var i=0; i<itemList.length; i++){
       item = itemList[i];
       items[item.id] = item;
-      var children = extractAllItems(item.children);
-      for(var id in children){
-        if(children.hasOwnProperty(id)){
-          items[id] = children[id];
+      if(typeof item.children !== "undefined"){
+        var children = extractAllItems(item.children);
+        for(var id in children){
+          if(children.hasOwnProperty(id)){
+            items[id] = children[id];
+          }
         }
       }
+      else{
+        item.children = false;
+      }
+      if(typeof item.descrip === "undefined"){
+        item.descrip = "";
+      }
     }
+    return items;
   }
 
-  allItems = {};
+  var allItems = {};
 
   listen("DOMContentLoaded", window, function(){
-    getElements();
-    listen("click", document, clicked);
     allItems = extractAllItems(ordrin.menu);
+    if(ordrin.render){
+      var menuHtml = Mustache.render(ordrin.template, ordrin);
+      document.getElementById("ordrinMenu").innerHTML = menuHtml;
+      getElements();
+    }
+    listen("click", document, clicked);
   });
 
   function clicked(event){
@@ -200,8 +285,9 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
   }
 
   function getChildWithClass(node, className){
+    var re = new RegExp("\\b"+className+"\\b");
     for(var i=0; i<node.children.length; i++){
-      if(node.children[i].className.indexOf(className)>=0){
+      if(re.test(node.children[i].className)){
         return node.children[i];
       }
     }
@@ -209,11 +295,11 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
 
   function getElementsByClassName(node, className){
     var re = new RegExp("\\b"+className+"\\b");
-    nodes = [];
+    var nodes = [];
     for(var i=0; i<node.children.length; i++){
-      child = node.children[i];
+      var child = node.children[i];
       if(re.test(child.className)){
-        nodes.append(child);
+        nodes.push(child);
       }
       nodes = nodes.concat(getElementsByClassName(child, className));
     }
@@ -224,34 +310,15 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
     // get the correct node, if it's not the current one
     node = goUntilParent(node, "mi");
     var itemId = node.getAttribute("data-miid");
-    var item = allItems[itemId];
-
-    console.log(node.getElementsByClassName("name"));
-    // put the name and description in the option box
-    var title   = item.name;
-    var price   = item.price;
-    var descrip = item.descrip;
-    var category = category.name;
-    elements.dialog.getElementsByClassName("dialogDescription")[0].innerHTML = descrip;
-    elements.dialog.getElementsByClassName("itemTitle")[0].innerHTML = title;
-    elements.dialog.getElementsByClassName("itemPrice")[0].innerHTML = price;
-    elements.dialog.setAttribute("data-miid", itemId);
-    elements.dialog.setAttribute("data-title", title);
-    elements.dialog.setAttribute("data-category", category);
-
-    // clone the options
-    node = getChildWithClass(node, "optionCategoryList").cloneNode(true);
-    
-    // unhide themp
-    node.className = node.className.replace("hidden", "");
-
-    // put them in the dialog option container
-    var container = getChildWithClass(elements.dialog, "popup-box-container");
-    getChildWithClass(container, "optionContainer").appendChild(node);
-
+    buildDialogBox(itemId);
     showDialogBox();
   }
 
+  function buildDialogBox(id){
+    elements.dialog.innerHTML = Mustache.render(ordrin.dialogTemplate, allItems[id]);
+    elements.dialog.setAttribute("data-miid", id);
+  }
+  
   function showDialogBox(){
     // show background
     elements.dialogBg.className = elements.dialogBg.className.replace("hidden", "");
@@ -266,22 +333,8 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
   }
 
   function hideDialogBox(){
-    if (elements.dialog.className.indexOf("hidden") == -1){
-      // hide the background and dialog box
-      elements.dialogBg.className   += " hidden";
-      elements.dialog.className     += " hidden";
-      // remove elements in option container
-      var container = getChildWithClass(elements.dialog, "popup-box-container");
-      var optionContainer = getChildWithClass(container, "optionContainer");
-      emptyNode(optionContainer);
-      var checkBoxes = elements.dialog.getElementsByClassName("optionCheckbox");
-      for(var i=0; i<checkBoxes.length; i++){
-        checkBoxes[i].checked = false;
-      }
-
-      // reset quantity
-      getChildWithClass(container, "itemQuantity").value = 1;
-    }
+    elements.dialogBg.className   += " hidden";
+    emptyNode(elements.dialog);
   }
 
   function removeTrayItem(node){
@@ -297,10 +350,10 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
   }
 
   function validateGroup(groupNode){
-    var group = allItems[group.getAttribute("data-mogid")];
-    var min = +(allItems.min_child_select);
-    var max = +(allItems.max_child_select);
-    var checkBoxes = groupNode.getElementsByClassName("optionCheckbox");
+    var group = allItems[groupNode.getAttribute("data-mogid")];
+    var min = +(group.min_child_select);
+    var max = +(group.max_child_select);
+    var checkBoxes = getElementsByClassName(groupNode, "optionCheckbox");
     var checked = 0;
     var errorNode = getChildWithClass(groupNode, "error");
     emptyNode(errorNode);
@@ -328,11 +381,13 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
 
   function addTrayItem(){
     var id = elements.dialog.getAttribute("data-miid");
+    console.log(id);
+    console.log(allItems[id]);
     var form = document.forms["ordrin-dialog"];
-    var quantity = form.elements["itemQuantity"];
+    var quantity = form.elements["itemQuantity"].value;
 
     var error = false;
-    var categories = elements.dialog.getElementsByClassName("optionCategory");
+    var categories = getElementsByClassName(elements.dialog, "optionCategory");
     for(var i=0; i<categories.length; i++){
       if(!validateGroup(categories[i])){
         error = true;
@@ -342,22 +397,24 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
     if(error){
       return;
     }
-    
-    var checkBoxes = form.options;
     var options = [];
-    for(var i=0; i<checkBoxes.length; i++){
-      if(checkBoxes[i].checked){
-        var listItem = goUntilParent(checkBoxes[i], "option")
-        var optionId = listItem.getAttribute("data-moid");
-        var optionName = allItems[optionId].name;
-        var optionPrice = allItems[optionId].price;
-        var option = new Option(optionId, optionName, optionPrice)
-        options.push(option);
+    if(form.options){
+      var checkBoxes = form.options;
+      for(var i=0; i<checkBoxes.length; i++){
+        if(checkBoxes[i].checked){
+          var listItem = goUntilParent(checkBoxes[i], "option")
+          var optionId = listItem.getAttribute("data-moid");
+          var optionName = allItems[optionId].name;
+          var optionPrice = allItems[optionId].price;
+          var option = new Option(optionId, optionName, optionPrice)
+          options.push(option);
+        }
       }
     }
     var itemName = allItems[id].name;
     var itemPrice = allItems[id].price;
     var trayItem = new TrayItem(id, quantity, options, itemName, itemPrice);
+    console.log(trayItem);
     ordrin.tray.addItem(trayItem);
     hideDialogBox();
   }
@@ -365,8 +422,8 @@ var ordrin = ordrin instanceof Object ? ordrin : {};
   // UTILITY FUNCTIONS
   function getElements(){
     var menu          = document.getElementById("ordrinMenu");
-    elements.dialog   = menu.getElementsByClassName("optionsDialog")[0];
-    elements.dialogBg = menu.getElementsByClassName("dialogBg")[0];
-    elements.tray     = menu.getElementsByClassName("tray")[0];
+    elements.dialog   = getElementsByClassName(menu, "optionsDialog")[0];
+    elements.dialogBg = getElementsByClassName(menu, "dialogBg")[0];
+    elements.tray     = getElementsByClassName(menu, "tray")[0];
   }
 })();
