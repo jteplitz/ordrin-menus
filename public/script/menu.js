@@ -97,7 +97,7 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
 
   if(!ordrin.hasOwnProperty("trayItemTemlate")){
     ordrin.trayItemTemplate = [
-      "<li class=\"trayItem\" data-listener=\"editTrayItem\">",
+      "<li class=\"trayItem\" data-listener=\"editTrayItem\" data-miid=\"{{itemId}}\" data-tray-id=\"{{trayItemId}}\">",
       "  <div class=\"trayItemRemove\" data-listener=\"removeTrayItem\">",
       "     X",
       "  </div>",
@@ -112,8 +112,7 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
       "      </li>",
       "    {{/options}}",
       "  </ul>",
-      "</li>",
-    ].join("");
+      "</li>"].join("");
   }
 
   var elements = {}; // variable to store elements so we don't have to continually DOM them
@@ -151,46 +150,54 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
       this.trayItemNode = div.firstChild;
       return this.trayItemNode;
     }
+
+    this.hasOptionSelected = function(id){
+      for(var i=0; i<options.length; i++){
+        if(options[i].id == id){
+          return true;
+        }
+      }
+      return false;
+    }
   }
 
-  var Tray = function(items){
-    this.items = items;
+  var Tray = function(){
+    this.items = {};
 
     this.addItem = function(item){
       if (!(item instanceof TrayItem)){
         throw new Error("Item must be an object of the Tray Item class");
       } else {
-        this.items.push(item);
+        this.items[item.trayItemId] = item;
+        var pageTrayItems = getElementsByClassName(elements.tray, "trayItem");
+        for(var i=0; i<pageTrayItems.length; i++){
+          if(pageTrayItems[i].getAttribute("data-tray-id")==item.trayItemId){
+            elements.tray.removeChild(pageTrayItems[i]);
+          }
+        }
         elements.tray.appendChild(item.renderTrayHtml());
       }
     }
 
     this.removeItem = function(id){
-      var removed;
-      var newItems = [];
-      var item;
-      for(var i=0; i<this.items.length; i++){
-        item = this.items[i];
-        if(item.id===id){
-          removed = item;
-        } else {
-          newItems.append(item);
-        }
-      }
+      var removed = this.items[id];
+      delete this.items[id];
       elements.tray.removeChild(removed.trayItemNode);
       this.items = newItems;
     }
 
     this.buildTrayString = function(){
       var string = "";
-      for (var i = 0; i < this.items.length; i++){
-        string += "+" + this.items[i].buildItemString();
+      for (var id in this.items){
+        if(this.items.hasOwnProperty()){
+          string += "+" + this.items[id].buildItemString();
+        }
       }
       return string.substring(1); // remove that first plus
     };
   };
 
-  ordrin.tray = new Tray([])
+  ordrin.tray = new Tray()
   ordrin.getTrayString = function(){
     return this.tray.buildTrayString();
   }
@@ -271,6 +278,7 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
     // call the appropiate function based on what element was actually clicked
     var routes = {  
       menuItem    : createDialogBox,
+      editTrayItem : createEditDialogBox,
       closeDialog : hideDialogBox,
       addToTray : addTrayItem,
       removeTrayItem : removeTrayItem,
@@ -314,6 +322,26 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
     showDialogBox();
   }
 
+  function createEditDialogBox(node){
+    node = goUntilParent(node, "trayItem");
+    var itemId = node.getAttribute("data-miid");
+    var trayItemId = node.getAttribute("data-tray-id");
+    var trayItem = ordrin.tray.items[trayItemId];
+    buildDialogBox(itemId);
+    var options = getElementsByClassName(elements.dialog, "option");
+    for(var i=0; i<options.length; i++){
+      var optId = options[i].getAttribute("data-moid");
+      var checkbox = getElementsByClassName(options[i], "optionCheckbox")[0];
+      checkbox.checked = trayItem.hasOptionSelected(optId);
+    }
+    var button = getElementsByClassName(elements.dialog, "buttonRed")[0];
+    button.setAttribute("value", "Save to Tray");
+    var quantity = getElementsByClassName(elements.dialog, "itemQuantity")[0];
+    quantity.setAttribute("value", trayItem.quantity);
+    elements.dialog.setAttribute("data-tray-id", trayItemId);
+    showDialogBox();
+  }
+
   function buildDialogBox(id){
     elements.dialog.innerHTML = Mustache.render(ordrin.dialogTemplate, allItems[id]);
     elements.dialog.setAttribute("data-miid", id);
@@ -335,6 +363,7 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
   function hideDialogBox(){
     elements.dialogBg.className   += " hidden";
     emptyNode(elements.dialog);
+    elements.dialog.removeAttribute("data-tray-id");
   }
 
   function removeTrayItem(node){
@@ -379,10 +408,8 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
     return true;
   }
 
-  function addTrayItem(){
+  function createItemFromDialog(){
     var id = elements.dialog.getAttribute("data-miid");
-    console.log(id);
-    console.log(allItems[id]);
     var form = document.forms["ordrin-dialog"];
     var quantity = form.elements["itemQuantity"].value;
 
@@ -413,8 +440,15 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
     }
     var itemName = allItems[id].name;
     var itemPrice = allItems[id].price;
-    var trayItem = new TrayItem(id, quantity, options, itemName, itemPrice);
-    console.log(trayItem);
+    var trayItem =  new TrayItem(id, quantity, options, itemName, itemPrice);
+    if(elements.dialog.hasAttribute("data-tray-id")){
+      trayItem.trayItemId = +(elements.dialog.getAttribute("data-tray-item"));
+    }
+    return trayItem;
+  }
+
+  function addTrayItem(){
+    var trayItem = createItemFromDialog();
     ordrin.tray.addItem(trayItem);
     hideDialogBox();
   }
