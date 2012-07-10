@@ -158,12 +158,12 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
       return false;
     }
 
-    this.getPrice = function(){
+    this.getTotalPrice = function(){
       var price = +(this.price);
       for(var i=0; i<this.options.length; i++){
         price += +(this.options[i].price);
       }
-      return price;
+      return price*(+(this.quantity));
     }
   }
 
@@ -207,7 +207,7 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
       var subtotal = 0.00;
       for(var id in this.items){
         if(this.items.hasOwnProperty(id)){
-          subtotal += this.items[id].getPrice();
+          subtotal += this.items[id].getTotalPrice();
         }
       }
       return subtotal;

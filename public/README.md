@@ -3,7 +3,40 @@
 This library allows anyone to easily place a menu in any web page simply by including `script/menu.js`. This menu will be placed in an empty `<div>` that has the id `ordrinMenu`. The provided file `style/main.css` gives default styling for the menu.
 
 ## Javascript
-The `ordrin` global object has all externally accessable information related to this script...
+The following classes are used for externally visible data:
+
+### Option
+Fields:
+1. `id`
+2. `name`
+3. `price`
+
+### TrayItem
+Fields:
+1. `trayItemId`
+2. `itemId`
+3. `itemName`
+4. `quantity`
+5. `options`
+6. `price`
+
+Methods:
+1. `buildItemString()`
+2. `renderTrayHtml()`
+3. `hasOptionSelected(optionId)`
+4. `getTotalPrice()`
+
+### Tray
+Fields:
+1. `items`
+
+Methods:
+1. `addItem(item)`
+2. `removeItem(id)`
+3. `buildTrayString()`
+4. `getSubtotal()`
+
+The `ordrin` global object has all externally accessable information related to this script. It has a field for the menu data (more on this later). It also has a field for each template and one for determining whether the script should render the menu from the template (again, more on these later). It also stores the tray in `ordrin.tray`. This is an instance of `Tray`.
 
 ## Input Data
 The webpage must contain a script element that creates the `ordrin` global object if it does not exist and sets `ordrin.menu` to an array of objects. This array should be in the same format as the value of the menu key in the restaurant details request to the ordr.in API, as detailed on [this page](http://ordr.in/developers/restaurant).
