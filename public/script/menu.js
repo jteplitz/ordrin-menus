@@ -1,4 +1,4 @@
-var ordrin = (ordrin instanceof Object) ? ordrin : {};
+var  ordrin = (ordrin instanceof Object) ? ordrin : {};
 
 (function(){
   "use strict";
@@ -159,6 +159,14 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
       }
       return false;
     }
+
+    this.getPrice = function(){
+      var price = +(this.price);
+      for(var i=0; i<this.options.length; i++){
+        price += +(this.options[i].price);
+      }
+      return price;
+    }
   }
 
   var Tray = function(){
@@ -169,13 +177,15 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
         throw new Error("Item must be an object of the Tray Item class");
       } else {
         this.items[item.trayItemId] = item;
+        var newNode = item.renderTrayHtml();
         var pageTrayItems = getElementsByClassName(elements.tray, "trayItem");
         for(var i=0; i<pageTrayItems.length; i++){
           if(pageTrayItems[i].getAttribute("data-tray-id")==item.trayItemId){
-            elements.tray.removeChild(pageTrayItems[i]);
+            elements.tray.replaceChild(newNode, pageTrayItems[i]);
+            return;
           }
         }
-        elements.tray.appendChild(item.renderTrayHtml());
+        elements.tray.appendChild(newNode);
       }
     }
 
@@ -183,18 +193,27 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
       var removed = this.items[id];
       delete this.items[id];
       elements.tray.removeChild(removed.trayItemNode);
-      this.items = newItems;
     }
 
     this.buildTrayString = function(){
       var string = "";
       for (var id in this.items){
-        if(this.items.hasOwnProperty()){
+        if(this.items.hasOwnProperty(id)){
           string += "+" + this.items[id].buildItemString();
         }
       }
       return string.substring(1); // remove that first plus
-    };
+    }
+
+    this.getSubtotal = function(){
+      var subtotal = 0.00;
+      for(var id in this.items){
+        if(this.items.hasOwnProperty(id)){
+          subtotal += this.items[id].getPrice();
+        }
+      }
+      return subtotal;
+    }
   };
 
   ordrin.tray = new Tray()
@@ -212,7 +231,6 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
   }
 
   function goUntilParent(node, targetClass){
-    console.log(node);
     var re = new RegExp("\\b"+targetClass+"\\b")
     if (node.className.match(re) === null){
       while(node.parentNode !== document){
@@ -229,7 +247,7 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
     }
   }
 
-  function emptyNode(node){
+  function clearNode(node){
     while(node.firstChild){
       node.removeChild(node.firstChild);
     }
@@ -355,22 +373,15 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
     elements.dialog.className = elements.dialog.className.replace("hidden", "");
   }
 
-  // checks if dialog is closable, and closes it if so
-  function closeOptionsDialog(){
-    hideDialogBox();
-  }
-
   function hideDialogBox(){
     elements.dialogBg.className   += " hidden";
-    emptyNode(elements.dialog);
+    clearNode(elements.dialog);
     elements.dialog.removeAttribute("data-tray-id");
   }
 
   function removeTrayItem(node){
     var item = goUntilParent(node, "trayItem");
-    var index = Array.prototype.indexOf.call(item.parentNode.children, item);
-    item.parentNode.removeChild(item)
-    ordrin.tray.removeItem(index)
+    ordrin.tray.removeItem(item.getAttribute("data-tray-id"));
   }
 
   function validateCheckbox(node){
@@ -385,7 +396,7 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
     var checkBoxes = getElementsByClassName(groupNode, "optionCheckbox");
     var checked = 0;
     var errorNode = getChildWithClass(groupNode, "error");
-    emptyNode(errorNode);
+    clearNode(errorNode);
     for(var j=0; j<checkBoxes.length; j++){
       if(checkBoxes[j].checked){
         checked++;
