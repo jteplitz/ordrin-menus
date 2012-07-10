@@ -75,7 +75,7 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
       "              <ul class=\"optionList\">",
       "                {{#children}}",
       "                  <li class=\"option\" data-moid=\"{{id}}\">",
-      "                    <input type=\"checkbox\" class=\"optionCheckbox\" data-listener=\"optionCheckbox\" name=\"options\" />",
+      "                    <input type=\"checkbox\" class=\"optionCheckbox\" data-listener=\"optionCheckbox\" />",
       "                    <span class=\"optionName\">{{name}}</span>",
       "                    <span class=\"optionPrice\">{{price}}</span>",
       "                  </li>",
@@ -87,7 +87,7 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
       "        </ul>",      
       "      </div>",
       "      <label for=\"itemQuantity\">Quantity: </label>",
-      "      <input type=\"number\" class=\"itemQuantity\" name=\"itemQuantity\" value=\"1\" min=\"1\" />",
+      "      <input type=\"number\" class=\"itemQuantity\" value=\"1\" min=\"1\" />",
       "      <br />",
       "      <input type=\"submit\" class=\"buttonRed\" data-listener=\"addToTray\" value=\"Add to Tray\" />",
       "  </div>"].join("");
