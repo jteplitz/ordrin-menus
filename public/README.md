@@ -7,34 +7,34 @@ The following classes are used for externally visible data:
 
 ### Option
 Fields:
-1. `id`
-2. `name`
-3. `price`
+1. `id`: The menu id of the option
+2. `name`: The name of the option
+3. `price`: The price of the option
 
 ### TrayItem
 Fields:
-1. `trayItemId`
-2. `itemId`
-3. `itemName`
-4. `quantity`
-5. `options`
-6. `price`
+1. `trayItemId`: The tray id of the item (used for uniquely identifying items in the tray
+2. `itemId`: The menu id of the item
+3. `itemName`: The name of the item
+4. `quantity`: The selected quantity for the item in the tray
+5. `options`: The selected options for the item in the tray
+6. `price`: The base price of the item
 
 Methods:
-1. `buildItemString()`
-2. `renderTrayHtml()`
-3. `hasOptionSelected(optionId)`
-4. `getTotalPrice()`
+1. `buildItemString()`: Returns the part of the ordr.in API query string corresponding to this item
+2. `renderTrayHtml()`: Returns the DOM node corresponding to this item in the tray
+3. `hasOptionSelected(optionId)`: Returns true if this item has an option selected with this `optionId` and false otherwise
+4. `getTotalPrice()`: Returns the total price of this tray item, taking into account selected options and quantity
 
 ### Tray
 Fields:
-1. `items`
+1. `items`: A hash mapping tray item ids to items in the tray
 
 Methods:
-1. `addItem(item)`
-2. `removeItem(id)`
-3. `buildTrayString()`
-4. `getSubtotal()`
+1. `addItem(item)`: Adds `item` to the tray
+2. `removeItem(id)`: Removes the item with the tray id `id` from the tray
+3. `buildTrayString()`: Returns the part of the ordr.in API query string corresponding to the tray
+4. `getSubtotal()`: Returns the total price of all items in the tray
 
 The `ordrin` global object has all externally accessable information related to this script. It has a field for the menu data (more on this later). It also has a field for each template and one for determining whether the script should render the menu from the template (again, more on these later). It also stores the tray in `ordrin.tray`. This is an instance of `Tray`.
 

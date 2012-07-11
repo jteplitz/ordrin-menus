@@ -20,7 +20,6 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
   
   if(!ordrin.hasOwnProperty("template")){
     ordrin.template = [
-      "  <div id=\"yourTray\">Your Tray</div>",
       "  <ul class=\"menuList\">",
       "    {{#menu}}",
       "      <li class=\"menuCategory\" data-mgid=\"{{id}}\">",
@@ -143,12 +142,10 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
     }
 
     this.renderTrayHtml = function(){
-      if(typeof this.trayItemNode === "undefined"){
-        var html = Mustache.render(ordrin.trayItemTemplate, this);
-        var div = document.createElement("div");
-        div.innerHTML = html;
-        this.trayItemNode = div.firstChild;
-      }
+      var html = Mustache.render(ordrin.trayItemTemplate, this);
+      var div = document.createElement("div");
+      div.innerHTML = html;
+      this.trayItemNode = div.firstChild;
       return this.trayItemNode;
     }
 
@@ -304,6 +301,7 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
       optionCheckbox : validateCheckbox
     }
     var node = event.srcElement;
+    var name;
     while(!node.hasAttribute("data-listener")){
       node = node.parentNode;
       if(node===null){
@@ -313,7 +311,7 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
     var name = node.getAttribute("data-listener");
 
     if (typeof routes[name] != "undefined"){
-      routes[name](node);
+      routes[name](event.srcElement);
     }
   }
 
@@ -426,7 +424,7 @@ y=E?function(a,c,d){return E.call(a,c,d)}:function(a,c,d){for(var e=0,b=a.length
 
   function createItemFromDialog(){
     var id = elements.dialog.getAttribute("data-miid");
-    var quantity = getElementsByClassName(elements.dialog, "itemQuantity")[0].value;
+    var quantity = form.elements["itemQuantity"].value;
     if(quantity<1){
       quantity = 1;
     }
