@@ -1,19 +1,38 @@
 # Readme
 
-This library allows anyone to easily place a menu in any web page simply by including `script/menu.js`. This menu will be placed in an empty `<div>` that has the id `ordrinMenu`. The provided file `style/main.css` gives default styling for the menu.
+This library allows anyone to easily place a menu in any web page simply by including `script/menu.js`. This menu will be placed in an empty `<div>` that has the id `ordrinMenu`. The provided file `style/main.css` gives default styling for the menu. For example, the following HTML would create a page with just the menu if `{{{menu}}}` is replaced with a menu array as detailed in the Input Data section:
+```html
+<!Doctype html>
+<html>
+  <head>
+    <!-- for IE6-8 support of HTML5 elements-->
+    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <link rel="stylesheet" href="/style/main.css" />
+    <script type="text/javascript" src="/script/menu.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      var ordrin = (ordrin instanceof Object) ? ordrin : {};
+      ordrin.render = true;
+      ordrin.menu   = {{{menu}}}
+    </script>
+    <div id="ordrinMenu"></div>
+  </body>
+</html>
+```
 
 ## Javascript
 The following classes are used for externally visible data:
 
 ### Option
-Fields:
+### Fields:
 
 1. `id`: The menu id of the option
 2. `name`: The name of the option
 3. `price`: The price of the option
 
 ### TrayItem
-Fields:
+#### Fields:
 
 1. `trayItemId`: The tray id of the item (used for uniquely identifying items in the tray
 2. `itemId`: The menu id of the item
@@ -22,7 +41,7 @@ Fields:
 5. `options`: The selected options for the item in the tray
 6. `price`: The base price of the item
 
-Methods:
+#### Methods:
 
 1. `buildItemString()`: Returns the part of the ordr.in API query string corresponding to this item
 2. `renderTrayHtml()`: Returns the DOM node corresponding to this item in the tray
@@ -30,11 +49,11 @@ Methods:
 4. `getTotalPrice()`: Returns the total price of this tray item, taking into account selected options and quantity
 
 ### Tray
-Fields:
+#### Fields:
 
 1. `items`: A hash mapping tray item ids to items in the tray
 
-Methods:
+#### Methods:
 
 1. `addItem(item)`: Adds `item` to the tray
 2. `removeItem(id)`: Removes the item with the tray id `id` from the tray
