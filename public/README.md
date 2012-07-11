@@ -7,12 +7,14 @@ The following classes are used for externally visible data:
 
 ### Option
 Fields:
+
 1. `id`: The menu id of the option
 2. `name`: The name of the option
 3. `price`: The price of the option
 
 ### TrayItem
 Fields:
+
 1. `trayItemId`: The tray id of the item (used for uniquely identifying items in the tray
 2. `itemId`: The menu id of the item
 3. `itemName`: The name of the item
@@ -21,6 +23,7 @@ Fields:
 6. `price`: The base price of the item
 
 Methods:
+
 1. `buildItemString()`: Returns the part of the ordr.in API query string corresponding to this item
 2. `renderTrayHtml()`: Returns the DOM node corresponding to this item in the tray
 3. `hasOptionSelected(optionId)`: Returns true if this item has an option selected with this `optionId` and false otherwise
@@ -28,9 +31,11 @@ Methods:
 
 ### Tray
 Fields:
+
 1. `items`: A hash mapping tray item ids to items in the tray
 
 Methods:
+
 1. `addItem(item)`: Adds `item` to the tray
 2. `removeItem(id)`: Removes the item with the tray id `id` from the tray
 3. `buildTrayString()`: Returns the part of the ordr.in API query string corresponding to the tray
